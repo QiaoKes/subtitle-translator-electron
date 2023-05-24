@@ -34,6 +34,7 @@ function Translator({ className }: { className?: string }) {
   const APIDialog: any = useRef(null)
   const downloadDialog: any = useRef(null)
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [splitEvery, setSplitEvery] = useState(5);
 
   useEffect(() => {
     if (localStorage.getItem('apiKey'))
@@ -148,7 +149,7 @@ function Translator({ className }: { className?: string }) {
   }
   async function startTranslationGPT4({ openai }: { openai: OpenAIApi }) {
     let subtitle = parsedSubtitle.filter(line => line.type === 'cue')
-    const splitEvery = 10
+
     let chunks = []
     let chunk = []
     for (let i = 0; i < subtitle.length; i++) {
@@ -339,6 +340,9 @@ function Translator({ className }: { className?: string }) {
               <i className='bx bx-chevron-down' ></i>
             </div>
           </div>
+
+          <label><i className='bx bx-list-ol'></i> Number of subtitles per chunk</label>
+          <input type="number" min="1" max="10" placeholder="Number of subtitles per chunk" value={splitEvery} onChange={e => setSplitEvery(parseInt(e.target.value))} required />
 
           <label><i className='bx bx-file-blank' ></i> Subtitle file</label>
           <input type="file" placeholder="Subtitle file" onChange={handleFileChange} accept=".srt,.vtt,.ass,.ssa" required />
